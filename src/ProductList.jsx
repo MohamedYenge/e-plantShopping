@@ -257,15 +257,17 @@ function ProductList({ onHomeClick }) {
         e.preventDefault();
         setShowCart(false);
     };
+    useEffect(() => {
+        const inCart = {};
+        cartItems.forEach(item => {
+            inCart[item.name] = true;
+        });
+        setAddedToCart(inCart);
+    }, [cartItems]);
+
     const handleAddToCart = (product) => {
-        dispatch(addItem(product)); // Dispatch the action to add the product to the cart (Redux action)
-      
-        setAddedToCart((prevState) => ({ // Update the local state to reflect that the product has been added
-          ...prevState, // Spread the previous state to retain existing entries
-          [product.name]: true, // Set the current product's name as a key with value 'true' to mark it as added
-        }));
-        
-      };
+        dispatch(addItem(product));
+    };
       const calculateTotalQuantity = () => {
         return cartItems ? cartItems.reduce((total, item) => total + item.quantity, 0) : 0;
          };
@@ -311,10 +313,10 @@ function ProductList({ onHomeClick }) {
           <button
             className={addedToCart[plant.name] ? 'product-button added-to-cart' : 'product-button'}
             disabled={addedToCart[plant.name]}
-            onClick={() => handleAddToCart(plant)} // Handle adding plant to cart
-          >
-           {addedToCart[plant.name] ? 'Added to Cart' : 'Add to Cart'}
-          </button>
+            onClick={() => handleAddToCart(plant)}
+        >
+            {addedToCart[plant.name] ? 'Added to Cart' : 'Add to Cart'}
+        </button>
         </div>
       ))}
     </div>
