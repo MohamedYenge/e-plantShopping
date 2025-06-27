@@ -8,6 +8,7 @@ function ProductList({ onHomeClick }) {
     const [showCart, setShowCart] = useState(false);
     const [showPlants, setShowPlants] = useState(false); // State to control the visibility of the About Us page
     const [addedToCart, setAddedToCart] = useState({});
+    const [isAdded,setIsAdded]= useState(false);
     const plantsArray = [
         {
             category: "Air Purifying Plants",
@@ -262,6 +263,7 @@ function ProductList({ onHomeClick }) {
           ...prevState, // Spread the previous state to retain existing entries
           [product.name]: true, // Set the current product's name as a key with value 'true' to mark it as added
         }));
+        
       };
     return (
         <div>
@@ -303,10 +305,11 @@ function ProductList({ onHomeClick }) {
           <div className="product-description">{plant.description}</div> {/* Display plant description */}
           <div className="product-cost">${plant.cost}</div> {/* Display plant cost */}
           <button
-            className="product-button"
+            className={addedToCart[plant.name] ? 'product-button added-to-cart' : 'product-button'}
+            disabled={addedToCart[plant.name]}
             onClick={() => handleAddToCart(plant)} // Handle adding plant to cart
           >
-            Add to Cart
+           {addedToCart[plant.name] ? 'Added to Cart' : 'Add to Cart'}
           </button>
         </div>
       ))}
